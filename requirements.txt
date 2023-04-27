@@ -1,0 +1,12 @@
+pandas
+matplotlib
+datasets
+flask
+gensim
+ipykernel==6.16.0
+joblib==1.2.0
+jupyter
+plotly
+sqlite3
+scikit-learn
+tqdm
