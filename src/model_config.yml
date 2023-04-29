@@ -1,0 +1,21 @@
+model:
+  data_path: ../fishing.db
+  model_1:
+    model_name: 'RandomForest'
+    model_save_loc: models\rf_model.sav
+    is_train: True
+    save_model: False
+    data_path: data
+    data_file: reviews.csv
+    output_path: data\non_bert_sa_prediction.csv
+    log_path: logs\non_bert_sentiment.log
+    plot_path: plots\
+    n_svd: 10
+    rf_n_est: [800, 1001, 100]
+    rf_max_d: [6, 9, 1]
+    xgb_eta: [0.08, 0.21, 0.03]
+    xgb_max_d: [4, 6, 1]
+    xgb_min_weight: [10, 21, 3]
+    xgb_n_est: [600, 801, 100]
+    xgb_sample: [0.7, 0.91, 0.1]
+    threshold: 0.5
