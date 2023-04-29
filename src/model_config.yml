@@ -1,5 +1,5 @@
+data_path: "../../data/fishing.db"
 model:
-  data_path: ../fishing.db
   model_1:
     model_name: 'RandomForest'
     model_save_loc: models\rf_model.sav
