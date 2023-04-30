@@ -1,0 +1,38 @@
+Training dataset has been loaded successfully
+
+---------------------------------
+Start training...
+
+Current training time:
+00:00:006.54
+{'max_depth': 8, 'n_estimators': 900}
+RandomForest model succesfully trained
+
+---------------------------------
+
+model_accuracy: 0.86
+model_precision: 0.85
+model_auc: 0.86
+model_f1score: 0.87
+sensitivity: 0.88
+specificity: 0.84
+
+---------------------------------
+
+Threshold parameter tuning
+
+Prediction using best threshold for accuracy
+-------------------------
+
+model_accuracy: 0.86
+model_precision: 0.85
+model_auc: 0.86
+model_f1score: 0.87
+sensitivity: 0.89
+specificity: 0.84
+Best threshold for accuracy: 0.48246149043531233
+Accuracy score at best threshold: 0.8645945945945946
+RandomForest model succesfully saved
+
+---------------------------------
+
