@@ -1,4 +1,5 @@
 pandas
+imblearn
 matplotlib
 datasets
 flask
@@ -10,3 +11,4 @@ plotly
 SQLAlchemy
 scikit-learn
 tqdm
+xgboost
