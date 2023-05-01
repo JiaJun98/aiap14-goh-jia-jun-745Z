@@ -1,0 +1,41 @@
+Model selected.. XGBoost  
+
+Training dataset has been loaded successfully
+
+---------------------------------
+Start training...
+
+Current training time:
+00:00:004.98
+XGBoost model succesfully trained
+
+{'colsample_bytree': 0.7, 'eta': 0.1, 'max_depth': 5, 'min_child_weight': 12, 'n_estimators': 600}
+
+---------------------------------
+
+model_accuracy: 0.92
+model_precision: 0.93
+model_auc: 0.92
+model_f1score: 0.92
+sensitivity: 0.91
+specificity: 0.93
+
+---------------------------------
+
+Threshold parameter tuning
+
+Prediction using best threshold for accuracy
+-------------------------
+
+model_accuracy: 0.92
+model_precision: 0.94
+model_auc: 0.92
+model_f1score: 0.92
+sensitivity: 0.91
+specificity: 0.94
+Best threshold for accuracy: 0.5122257
+Accuracy score at best threshold: 0.9218918918918919
+XGBoost model succesfully saved
+
+---------------------------------
+
