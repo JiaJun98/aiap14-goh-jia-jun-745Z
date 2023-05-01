@@ -1,7 +1,6 @@
 pandas
 imblearn
 matplotlib
-gensim
 ipykernel==6.16.0
 joblib==1.2.0
 jupyter
