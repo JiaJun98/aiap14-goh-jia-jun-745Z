@@ -58,7 +58,7 @@ model_1:
 In this block of YAML code, we can change the parameters of RandomForest which are rf_n_est(representing number of estimators), rf_max_d(representing the max depth of the tress in the model) and threshold presenting the float where the model will consider it as a positive class "RainTomorrow"
 
 ## Logical steps/flow of the pipeline 
-![Logical_steps_pipeline.jpg](attachment:Logical_steps_pipeline.jpg)
+![Logical_steps_pipeline.jpg](/Logical_steps_pipeline.jpg?raw=true "Optional Title")
 
 ## Overview of key findings from the EDA conducted in Task 1
 - Choices done in pipeline
