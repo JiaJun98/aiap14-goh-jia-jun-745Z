@@ -5,7 +5,6 @@ from utility import parse_config
 from sklearn.preprocessing import OneHotEncoder,MinMaxScaler
 from sklearn.model_selection import train_test_split
 from imblearn.over_sampling import SMOTE
-import statsmodels.api as sma
 import numpy as np
 
 def load_dataset(config_file):

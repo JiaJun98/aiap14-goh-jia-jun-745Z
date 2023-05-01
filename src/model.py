@@ -152,7 +152,7 @@ class FishingModel(BaseModel):
         rf_grid = {'max_depth':max_d, 'n_estimators':n_est}
         #Execute grid search and fit model
         rf = RandomForestClassifier(random_state = 4263, criterion = 'entropy')
-        rf_gscv = GridSearchCV(rf, rf_grid, cv = 2, return_train_score = True, verbose=10)
+        rf_gscv = GridSearchCV(rf, rf_grid, cv = 5, return_train_score = True, verbose=10)
         rf_gscv.fit(self.x_train, self.y_train)
         start_time = time.time()
         rf_para = rf_gscv.best_params_
@@ -219,8 +219,9 @@ class FishingModel(BaseModel):
                     'colsample_bytree':sample, 'n_estimators':n_est}
         #Execute grid search and fit model
         xgb = XGBClassifier(random_state = 4263, eval_metric = roc_auc_score)
-        xgb_gscv = GridSearchCV(xgb, xgb_grid, cv = 2 ,return_train_score = True, verbose=10)
+        xgb_gscv = GridSearchCV(xgb, xgb_grid, cv = 5 ,return_train_score = True, verbose=10)
         xgb_gscv.fit(self.x_train, self.y_train)
+        start_time = time.time()
         xgb_para = xgb_gscv.best_params_
         xgb = XGBClassifier(eta = xgb_para.get('eta'), max_depth = xgb_para.get('max_depth'),
                             min_child_weight = xgb_para.get('min_child_weight'),
@@ -228,6 +229,13 @@ class FishingModel(BaseModel):
                             n_estimators = xgb_para.get('n_estimators'), random_state = 4263,
                             eval_metric = roc_auc_score)
         xgb.fit(self.x_train, self.y_train)
+        finished = time.time()
+        time_elaspsed = finished - start_time
+        hours, seconds = divmod(time_elaspsed, 3600)
+        minutes, seconds = divmod(seconds, 60)
+        custom_print("Current training time:",logger = logger)
+        custom_print("{:02d}:{:02d}:{:06.2f}".format(int(hours), int(minutes), seconds),
+                     logger = logger)
         xgb_pred = xgb.predict(self.x_test)
         xgb_proba = xgb.predict_proba(self.x_test)[:,1]
         custom_print('XGBoost model succesfully trained\n', logger = logger)
@@ -237,6 +245,7 @@ class FishingModel(BaseModel):
         custom_print('\n---------------------------------\n',logger = logger)
         custom_print('Threshold parameter tuning\n', logger = logger)
         threshold, accuracy = plot_pr_curve(xgb_proba, self.y_test, plot_path)
+        plot_roc_curve(xgb_proba, self.y_test, plot_path)
         xgb_pred_best = []
         for i in xgb_proba:
             if i>=threshold:
@@ -263,18 +272,25 @@ class FishingModel(BaseModel):
         '''
         #Loading training parameter range
         n_range = config_file[model_number]['n_neighbors']
-        n = np.arange(n_range[0], n_range[1], n_range[2])
         weight_range = config_file[model_number]['weights']
         weight = weight_range
-        knn_grid = {'n_neighbors':n, 'weights':weight}
+        knn_grid = {'n_neighbors':n_range, 'weights':weight}
         #Execute grid search and fit model
         knn = KNeighborsClassifier()
-        knn_gscv = GridSearchCV(knn, knn_grid, cv = 2 ,return_train_score = True, verbose=10)
+        knn_gscv = GridSearchCV(knn, knn_grid, cv = 5 ,return_train_score = True, verbose=10)
         knn_gscv.fit(self.x_train, self.y_train)
+        start_time = time.time()
         knn_para = knn_gscv.best_params_
         knn = KNeighborsClassifier(n_neighbors = knn_para.get('n_neighbors'),
                                     weights = knn_para.get('weights'))
         knn.fit(self.x_train, self.y_train)
+        finished = time.time()
+        time_elaspsed = finished - start_time
+        hours, seconds = divmod(time_elaspsed, 3600)
+        minutes, seconds = divmod(seconds, 60)
+        custom_print("Current training time:",logger = logger)
+        custom_print("{:02d}:{:02d}:{:06.2f}".format(int(hours), int(minutes), seconds),
+                     logger = logger)
         knn_pred = knn.predict(self.x_test)
         knn_proba = knn.predict_proba(self.x_test)[:,1]
         custom_print('KNN model succesfully trained\n', logger = logger)
@@ -284,6 +300,7 @@ class FishingModel(BaseModel):
         custom_print('\n---------------------------------\n',logger = logger)
         custom_print('Threshold parameter tuning\n', logger = logger)
         threshold, accuracy = plot_pr_curve(knn_proba, self.y_test, plot_path)
+        plot_roc_curve(knn_proba, self.y_test, plot_path)
         knn_pred_best = []
         for i in knn_proba:
             if i>=threshold:
@@ -307,7 +324,9 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--model_number", type=str, required=True)
+    parser.add_argument("--cv", type=int, default=5)
     args = parser.parse_args()
+    print(args.cv)
 
     config_path = os.path.join(curr_dir, 'model_config.yml')
     config_file = parse_config(config_path)
@@ -326,7 +345,7 @@ if __name__ == "__main__":
     threshold = config_file[model_number]['threshold']
     is_train = config_file[model_number]['is_train']
     save_model = config_file[model_number]['save_model']
-    log_path = os.path.join(curr_dir,config_file[model_number]['log_path'] + model_name + ".log")
+    log_path = os.path.join(curr_dir,config_file[model_number]['log_path'] + model_name + "Test.log")
     plot_path =  os.path.join(curr_dir,config_file[model_number]['plot_path'] + "/" + model_name)
     print(log_path)
     print(plot_path)
