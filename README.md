@@ -59,9 +59,7 @@ In this block of YAML code, we can change the parameters of RandomForest which a
 
 ## Logical steps/flow of the pipeline 
 
-- Insert MiroFlow chart
-    
-d. Description of logical steps/flow of the pipeline. If you find it useful, please feel free to include suitable visualization aids (eg, flow charts) within the README.
+![AIAP%20Pipeline%20Flowchart%20-%20Frame%201.jpg](attachment:AIAP%20Pipeline%20Flowchart%20-%20Frame%201.jpg)
 
 ## Overview of key findings from the EDA conducted in Task 1
 - Choices done in pipeline
@@ -152,6 +150,10 @@ Consideration for deploying models developed
 i. Other considerations for deploying the models developed.
 
 NOTE: your EDA still deciding on the missing data part
+
+
+
+
 
 
 
