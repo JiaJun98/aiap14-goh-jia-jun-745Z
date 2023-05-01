@@ -114,15 +114,31 @@ In this block of YAML code, we can change the parameters of RandomForest which a
 
 ## Table of how features were processed
 
-| Column 1 Header | Column 2 Header | Column 3 Header | Column 4 Header | Column 5 Header |
+| Missing data | Invalid Data | Data Tranformation | One-Hot-Encoding(OHC)| Imbalance data |
 |-----------------|-----------------|-----------------|-----------------|-----------------|
-| Row 1, Column 1 | Row 1, Column 2 | Row 1, Column 3 | Row 1, Column 4 | Row 1, Column 5 |
-| Row 2, Column 1 | Row 2, Column 2 | Row 2, Column 3 | Row 2, Column 4 | Row 2, Column 5 |
-| Row 3, Column 1 | Row 3, Column 2 | Row 3, Column 3 | Row 3, Column 4 | Row 3, Column 5 |
+|"None" renamed to "Unknown" in "RainToday" | Negative values in "Sunshine"mutiplied by -1 | log(1+x) for the columns of 'WindGustSpeed', 'WindSpeed9am', 'Evaporation', 'WindSpeed3pm','Sunshine' | Turned all continous variables into their OHC| Conducted SMOTE on responding variable "RainTomorrow" |
+||  Removed value = 0 in "Evaporation" |
+|| "Pressure9am" and "Pressure3pm" were lowercased |
 
-
-g. Explanation of your choice of models for each machine learning task.
 ## Explanation of choice of models
+From EDA in Task1, "Sunshine" and "Rainfall" is highly skewed and diffcult to assume a distribution
+
+**K-nearest Neigbout(KNN)**
+1. No assumption about data as it is a non-parametric model
+2. KNN is simple and easy undestand model for small-medium datasets
+
+From EDA in Task1 there exist mulit-collinearity of most continuous variables. It is unwise to use linear models however, tree-based models could be more resistant to Multi-collinearity
+
+**XGBoost**
+1. Regularization: It uses L1 and L2 regularization to reduce overfitting
+2. Resistant to Multi-collinearity as it is a tree-based method that selects a subset of the features at each split reducing impact of highly correlated featues
+
+**RandomForest**
+1. Low bias. Given that RandomForest can capture non-linear relationship between variables without overfitting
+2. Outlier detection. Given that our dataset has quite a number of outliers for several columns such as RainFall, Evaporation, WindGustSpeed, WindSpeed9am, WindSpeed3pm, Humidity9am, Humidity3pm, this model is robust to deal with the outliers
+2. Resistant to Multi-collinearity as it uses boostrap sampling and deature sampling and will pick different features for different model and see different sets of data points
+
+
 
 ## Evaluation of the models developed and metrics used
 
@@ -142,13 +158,12 @@ From above, XGBoost seems to be best performing model as it has the highest metr
 
 For threshold determination, based on the Precision-Recall and ROC curve, it will be about roughly 0.51 to determine that a class is positive ("RainTomorrow")
 
-## Consideration for deploying models developed
+Do note that I have used AWS Sagemaker with GPU of instance ml.g4dn.2xlarge
 
+## Consideration for deploying models developed
 
 Consideration for deploying models developed
 i. Other considerations for deploying the models developed.
-
-NOTE: your EDA still deciding on the missing data part
 
 
 
