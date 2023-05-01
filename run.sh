@@ -1,7 +1,4 @@
 #!/bin/bash
-# Activate the virtual environment
-source env/bin/activate
-
 # Install the required packages
 pip install -r requirements.txt
 cd src
