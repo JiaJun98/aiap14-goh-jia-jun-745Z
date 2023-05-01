@@ -161,14 +161,8 @@ For threshold determination, based on the Precision-Recall and ROC curve, it wil
 Do note that I have used AWS Sagemaker with GPU of instance ml.g4dn.2xlarge
 
 ## Consideration for deploying models developed
-
-Consideration for deploying models developed
-i. Other considerations for deploying the models developed.
-
-
-
-
-
-
-
-
+1. Seamless transistion from training enviornment. If software engineers are not familiar, it will lead to error-prone process during deployment phase. Containerization technogy like Docker is able to intergrate with mutiple ML frameworks and model development environments.
+Models can be deployed in different environment without software conflicts
+2. Model Explanability: There is a need to ensure that the model is interpretable and that stakeholders can understand how it makes predictions.
+3. Continuous Integration and Continuous Development. Models do not stauy static after deployment. Due to concept and data drift, there is a need to update and retrain the model whilst intergrating and deploying. Model registry is need to record and recall details to simplify operational overhead to manage mutiple versions of model. MLFlow and Airflow are technologies to explore in this area.
+4. Security access. One should apply common security best practices for authentication and access.
