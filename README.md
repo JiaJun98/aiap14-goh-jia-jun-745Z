@@ -76,20 +76,28 @@ d. Description of logical steps/flow of the pipeline. If you find it useful, ple
       - Cloud3pm and Cloud9am
       2. Again, if we use a linear model, it might be useful to remove WindGustSpeed, (Humidity3pm or Humidity 9am) , (Cloud3pm or Cloud9am)
 
+## Table of how features were processed
+
+## Explanation of choice of models
+
+## Evaluation of the models developed and metrics used
+
+## Consideration for deploying models developed
+
 Summarized in table how features are processed
 f. Described how the features in the dataset are processed (summarized in a table)
 
-Explanation of choice of models
+
 g. Explanation of your choice of models for each machine learning task.
 
-h. Evaluation of the models developed. 
+h. 
 Any metrics used in the evaluation should also be explained.
 Evaluation of models developed
 
 Consideration for deploying models developed
 i. Other considerations for deploying the models developed.
 
-NOTE: your EDA still deciding on the missing data part (fuck it lol no time)
+NOTE: your EDA still deciding on the missing data part
 
 
 
