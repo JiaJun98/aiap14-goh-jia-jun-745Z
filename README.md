@@ -19,13 +19,15 @@ aiap14-goh-jia-jun-745Z/
 └── run.sh
 ```
 
+
+
 c. Instructions for executing the pipeline and modifying any parameters.
 ## Instructions
 To run the whole pipeline execute the following
-- ./run.sh <model_number>
-model_1 is RandomForest
-model_2 is XGBoost
-model_3 is K-Nearest Neigbours
+`./run.sh <model_number>`
+- model_1 is RandomForest
+- model_2 is XGBoost
+- model_3 is K-Nearest Neigbours
 
 ## Logical steps/flow of the pipeline 
 <Insert flowchart picture for pipeline>
