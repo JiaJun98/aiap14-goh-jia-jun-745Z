@@ -1,8 +1,6 @@
 pandas
 imblearn
 matplotlib
-datasets
-flask
 gensim
 ipykernel==6.16.0
 joblib==1.2.0
