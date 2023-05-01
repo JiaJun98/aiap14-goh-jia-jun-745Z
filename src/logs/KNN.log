@@ -1,0 +1,41 @@
+Model selected.. KNN  
+
+Training dataset has been loaded successfully
+
+---------------------------------
+Start training...
+
+Current training time:
+00:00:000.01
+KNN model succesfully trained
+
+{'n_neighbors': 3, 'weights': 'distance'}
+
+---------------------------------
+
+model_accuracy: 0.87
+model_precision: 0.80
+model_auc: 0.86
+model_f1score: 0.88
+sensitivity: 0.98
+specificity: 0.75
+
+---------------------------------
+
+Threshold parameter tuning
+
+Prediction using best threshold for accuracy
+-------------------------
+
+model_accuracy: 0.92
+model_precision: 0.89
+model_auc: 0.92
+model_f1score: 0.92
+sensitivity: 0.96
+specificity: 0.88
+Best threshold for accuracy: 0.6989284766274788
+Accuracy score at best threshold: 0.9167567567567567
+K-nearest neighbour model succesfully saved
+
+---------------------------------
+
