@@ -1,4 +1,4 @@
-data_path: '../../data/fishing.db'
+data_path: 'data/fishing.db'
 date_columns : ["Date", "Day", "Month", "Year"]
 target : 'RainTomorrow'
 model_1:
