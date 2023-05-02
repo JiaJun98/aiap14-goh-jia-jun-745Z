@@ -3,7 +3,6 @@
 pip install -r requirements.txt
 cd src
 
-# Train or predict using the specified model
 if [ "$1" = "model_1" ]; then
     echo "Training/predicting using model1"
     python model.py --model=model_1
@@ -16,5 +15,3 @@ elif [ "$1" = "model_3" ]; then
 else
     echo "Invalid model specified"
 fi
-
-#Remember to include model_1  = RandomForest
