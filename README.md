@@ -35,10 +35,11 @@ In the folder structure,
 ## Instructions
 To run the whole pipeline execute the following 
 1. `chmod +x run.sh` 
-2. `./run.sh <model_number>`
+2. `./run.sh <model_number> <cv>`
 - model_1 is RandomForest
 - model_2 is XGBoost
 - model_3 is K-Nearest Neigbours
+- cv is the number of cross-fold validation for grid search(default is 5)
 
 To modify parameters, we refer to the model_config.yml. An example is shown in model_1 below
 
@@ -161,8 +162,9 @@ For threshold determination, based on the Precision-Recall and ROC curve, it wil
 Do note that I have used AWS Sagemaker with GPU of instance ml.g4dn.2xlarge
 
 ## Consideration for deploying models developed
-1. Seamless transistion from training enviornment. If software engineers are not familiar, it will lead to error-prone process during deployment phase. Containerization technogy like Docker is able to intergrate with mutiple ML frameworks and model development environments.
-Models can be deployed in different environment without software conflicts
-2. Model Explanability: There is a need to ensure that the model is interpretable and that stakeholders can understand how it makes predictions.
-3. Continuous Integration and Continuous Development. Models do not stauy static after deployment. Due to concept and data drift, there is a need to update and retrain the model whilst intergrating and deploying. Model registry is need to record and recall details to simplify operational overhead to manage mutiple versions of model. MLFlow and Airflow are technologies to explore in this area.
+1. Seamless transition from the training environment. If software engineers are unfamiliar of the training environment, it will lead to an error-prone process during the deployment phase. Containerization technology like Docker can integrate with multiple ML frameworks and model development environments.
+Models can be deployed in different environments without software conflicts
+2. Model Explainability: There is a need to ensure that the model is interpretable and that stakeholders can understand how it makes predictions.
+3. Continuous Integration and Continuous Development. Models do not stay static after deployment. Due to concept and data drift,
+upgrading and retraining the model is essential whilst integrating and deploying. Model registry is needed to record and recall details to simplify operational overhead to manage multiple versions of the model. MLFlow and Airflow are technologies to explore in this area.
 4. Security access. One should apply common security best practices for authentication and access.

@@ -29,19 +29,19 @@ class FishingModel(BaseModel):
     Parameters
     -----------
     model_name: str
-        FishingModel Model to train/predict. Choose from 'LogisticRegression', 'RandomForest', 'XGBoost'
+        FishingModel Model to train/predict. Choose from 'RandomForest', 'XGBoost', 'KNN'
 
     Attributes
     -----------
     model: str
         The type of model that will be used in training/prediction of the data
-        ('LogisticRegression', 'RandomForest', 'XGBoost')
+        ('RandomForest', 'XGBoost', 'KNN')
     data: pd.DataFrame
        Fully cleaned DataFrame
     x_train: pd.DataFrame
-        Contains preprocessed bag of words features that will be used in training
+        Contains preprocessed training dataset from fishing.db
     x_test: pd.DataFrame
-        Contains preprocessed bag of words features that will be used in testing trained model
+        Contains preprocessed testing dataset from fishing.db
     y_train: np.ndarray
         True value of 'RainTomorrow' to be used in training
     y_test: np.ndarray
@@ -76,7 +76,7 @@ class FishingModel(BaseModel):
         self.y_train = y_train
         self.y_test =  y_test
 
-    def train(self, model_type):
+    def train(self, model_type,cv_num):
         '''
         Trains the chosen model using the respective data given
         
@@ -84,15 +84,17 @@ class FishingModel(BaseModel):
         -----------
             model_type : str
                 A choice of 3 models are available.
-                'RandomForest' and 'XGBoost'
+                'RandomForest' and 'XGBoost' and 'KNN'
+            cv_num: int
+                Number of cross validation folds to be used in GridSearchCV
         '''
         if model_type == 'RandomForest':
-            self.rf()
+            self.rf(cv_num)
 
         if model_type == 'XGBoost':
-            self.xgboost()
+            self.xgboost(cv_num)
         if model_type == 'KNN':
-            self.knn()
+            self.knn(cv_num)
     
     def predict(self, model_type, threshold):
         '''
@@ -137,11 +139,11 @@ class FishingModel(BaseModel):
                     sentiment.append(0)
         custom_print(str(model_type) + ' has been succesfully predicted\n', logger = logger)
 
-    def rf(self): #Currently testing CV = 2
+    def rf(self,cv_num):
         '''
         When 'RandomForest' is chosen for parameter model_type in the train function,
         this function will be called to train a Random Forest model
-        via a grid search for the range of grid specified in the non_bert_sentiment_config.yml file.
+        via a grid search for the range of grid specified in the model_config.yml file.
         The available parameters to train are n_estimators and max_depth
         '''
         #Load training parameter range
@@ -151,8 +153,8 @@ class FishingModel(BaseModel):
         max_d = np.arange(max_d_range[0], max_d_range[1], max_d_range[2])
         rf_grid = {'max_depth':max_d, 'n_estimators':n_est}
         #Execute grid search and fit model
-        rf = RandomForestClassifier(random_state = 4263, criterion = 'entropy')
-        rf_gscv = GridSearchCV(rf, rf_grid, cv = 5, return_train_score = True, verbose=10)
+        rf = RandomForestClassifier(random_state = 42, criterion = 'entropy')
+        rf_gscv = GridSearchCV(rf, rf_grid, cv = cv_num, return_train_score = True, verbose=10)
         rf_gscv.fit(self.x_train, self.y_train)
         start_time = time.time()
         rf_para = rf_gscv.best_params_
@@ -196,11 +198,11 @@ class FishingModel(BaseModel):
         else:
             custom_print('Warning: RandomForest model has NOT been saved', logger = logger)
 
-    def xgboost(self):
+    def xgboost(self,cv_num):
         '''
         When 'XGBoost' is chosen for parameter model_type in the train function,
         this function will be called to train a XGBoost model
-        via a grid search for the range of grid specified in the non_bert_sentiment_config.yml file.
+        via a grid search for the range of grid specified in the model_config.yml file.
         The available parameters to train are eta, max_depth, min_child_weight,
         n_estimators and colsample_bytree
         '''
@@ -218,8 +220,8 @@ class FishingModel(BaseModel):
         xgb_grid = {'eta':eta, 'max_depth':max_d, 'min_child_weight':min_weight,
                     'colsample_bytree':sample, 'n_estimators':n_est}
         #Execute grid search and fit model
-        xgb = XGBClassifier(random_state = 4263, eval_metric = roc_auc_score)
-        xgb_gscv = GridSearchCV(xgb, xgb_grid, cv = 5 ,return_train_score = True, verbose=10)
+        xgb = XGBClassifier(random_state = 42, eval_metric = roc_auc_score)
+        xgb_gscv = GridSearchCV(xgb, xgb_grid, cv = cv_num ,return_train_score = True, verbose=10)
         xgb_gscv.fit(self.x_train, self.y_train)
         start_time = time.time()
         xgb_para = xgb_gscv.best_params_
@@ -263,11 +265,11 @@ class FishingModel(BaseModel):
         else:
             custom_print('Warning: XGBoost model has NOT been saved', logger = logger)
     
-    def knn(self):
+    def knn(self,cv_num):
         '''
         When 'KNN' is chosen for parameter model_type in the train function,
         this function will be called to train a KNN model
-        via a grid search for the range of grid specified in the non_bert_sentiment_config.yml file.
+        via a grid search for the range of grid specified in the  model_config.yml file.
         The available parameters to train are n_neighbors and weights
         '''
         #Loading training parameter range
@@ -277,7 +279,7 @@ class FishingModel(BaseModel):
         knn_grid = {'n_neighbors':n_range, 'weights':weight}
         #Execute grid search and fit model
         knn = KNeighborsClassifier()
-        knn_gscv = GridSearchCV(knn, knn_grid, cv = 5 ,return_train_score = True, verbose=10)
+        knn_gscv = GridSearchCV(knn, knn_grid, cv = cv_num ,return_train_score = True, verbose=10)
         knn_gscv.fit(self.x_train, self.y_train)
         start_time = time.time()
         knn_para = knn_gscv.best_params_
@@ -321,13 +323,10 @@ class FishingModel(BaseModel):
 
 if __name__ == "__main__":
     curr_dir = os.getcwd()
-
     parser = argparse.ArgumentParser()
     parser.add_argument("--model_number", type=str, required=True)
     parser.add_argument("--cv", type=int, default=5)
     args = parser.parse_args()
-    print(args.cv)
-
     config_path = os.path.join(curr_dir, 'model_config.yml')
     config_file = parse_config(config_path)
     fishing_df = load_dataset(config_file)
@@ -337,18 +336,16 @@ if __name__ == "__main__":
     X_train, X_test, Y_train, Y_test = train_test_processing(fishing_df_preprocess,DATE_COLUMNS,TARGET_COLUMN)
 
     model_number = args.model_number
+    cv = args.cv
     model_block = config_file[model_number]
     model_name = model_block['model_name']
-    
     model_save_loc = os.path.join(curr_dir, config_file[model_number]['model_save_loc'])
     data_path = config_file['data_path']
     threshold = config_file[model_number]['threshold']
     is_train = config_file[model_number]['is_train']
     save_model = config_file[model_number]['save_model']
-    log_path = os.path.join(curr_dir,config_file[model_number]['log_path'] + model_name + "Test.log")
+    log_path = os.path.join(curr_dir,config_file[model_number]['log_path'] + model_name + ".log")
     plot_path =  os.path.join(curr_dir,config_file[model_number]['plot_path'] + "/" + model_name)
-    print(log_path)
-    print(plot_path)
     logger = open(os.path.join(curr_dir, log_path), 'w')
     custom_print(f"Model selected.. {model_name}  \n",logger = logger)
     df = FishingModel(X_train, X_test, Y_train, Y_test , model_name = model_name)
@@ -357,7 +354,7 @@ if __name__ == "__main__":
         custom_print('---------------------------------',logger = logger)
         custom_print("Start training...\n",logger = logger)
         start_time = time.time()
-        df.train(model_name)
+        df.train(model_name,cv)
         custom_print('\n---------------------------------\n',logger = logger)
     else:
         custom_print("Data to be predicted has been loaded successfully",logger = logger)
