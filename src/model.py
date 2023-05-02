@@ -17,12 +17,6 @@ from xgboost import XGBClassifier
 import pickle
 import joblib
 
-#Need to optimise
-#Need to provide explanation for choice of algorithms
-#Appropriate use of eval metrics + evaluation (Follow DSA4263)
-#Understand diff components in ML pipelines
-
-#Create Non-Bert Classifier Class
 class FishingModel(BaseModel):
     '''
     FishingModel
