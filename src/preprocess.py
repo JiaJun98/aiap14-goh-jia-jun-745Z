@@ -7,6 +7,9 @@ from sklearn.model_selection import train_test_split
 from imblearn.over_sampling import SMOTE
 import numpy as np
 
+def check():
+    pass
+
 def load_dataset(config_file):
     """Establishing connection with sqlite3
     
