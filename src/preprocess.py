@@ -8,7 +8,7 @@ from imblearn.over_sampling import SMOTE
 import numpy as np
 
 def check():
-    print("Testings")
+    print("Testings123")
 
 def load_dataset(config_file):
     """Establishing connection with sqlite3
