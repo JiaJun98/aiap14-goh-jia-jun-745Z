@@ -8,7 +8,7 @@ if [ ! -z "$2" ]; then
     cv="$2"
 fi
 
-# Train or predict using the specified model
+# Train or predict using the specified models
 if [ "$1" = "model_1" ]; then
     echo "Training model using ${cv}-fold cross validation using RandomForest"
     python model.py --model=model_1 --cv=$cv
